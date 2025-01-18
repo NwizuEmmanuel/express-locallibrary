@@ -1,13 +1,26 @@
 {
   "name": "express-locallibrary",
-  "version": "0.0.0",
-  "private": true,
-  "type": "module",
+  "version": "1.0.0",
+  "main": "app.js",
   "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node ./bin/www",
     "devstart": "nodemon ./bin/www",
     "startserver": "set DEBUG=express-locallibrary:* & npm run start"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NwizuEmmanuel/express-locallibrary.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/NwizuEmmanuel/express-locallibrary/issues"
+  },
+  "homepage": "https://github.com/NwizuEmmanuel/express-locallibrary#readme",
+  "description": "",
   "dependencies": {
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",

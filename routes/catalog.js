@@ -48,4 +48,4 @@ router.post("/bookinstance/:id/delete", bookinstance_controller.bookinstance_del
 router.get("/bookinstance/:id", bookinstance_controller.bookinstance_detail)
 router.get("/bookinstances", bookinstance_controller.bookinstance_list)
 
-export default router
+module.exports = router

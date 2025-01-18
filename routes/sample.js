@@ -6,4 +6,4 @@ router.get("/", (req, res)=>{
     res.render("sample");
 })
 
-export default router
+module.exports = router

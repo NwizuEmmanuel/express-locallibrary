@@ -1,41 +1,35 @@
-import createError from 'http-errors';
-import express, { json, urlencoded, static as static_ } from 'express';
-import { join } from 'path';
-import cookieParser from 'cookie-parser';
-import logger from 'morgan';
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
+const createError = require('http-errors')
+const express = require('express')
+const path = require('path')
+const cookieParser = require('cookie-parser')
+const logger = require('morgan')
 
-import indexRouter from './routes/index.js';
-import usersRouter from './routes/users.js';
-import wikiRouter from "./routes/wiki.js";
-import catalogRouter from "./routes/catalog.js"
-import sampleRouter from "./routes/sample.js"
+const indexRouter = require('./routes/index.js')
+const usersRouter = require('./routes/users.js')
+const catalogRouter = require("./routes/catalog.js")
+const sampleRouter = require("./routes/sample.js")
 
 let app = express();
-import { set, connect } from "mongoose";
-set("strictQuery", false);
+const mongoose = require("mongoose")
+mongoose.set("strictQuery", false);
 const mongoDB = "mongodb://localhost:27071/local_library";
 async function main(){
-  await connect(mongoDB);
+  await mongoose.connect(mongoDB);
 }
 main().catch((err) => console.log(err));
 
 // view engine setup
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = dirname(__filename)
-app.set('views', join(__dirname, 'views'));
+app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
 app.use(logger('dev'));
-app.use(json());
-app.use(urlencoded({ extended: false }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(static_(join(__dirname, 'public')));
+app.use(express.static(join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use("/wiki", wikiRouter);
 app.use("/catalog", catalogRouter)
 app.use("/sample", sampleRouter)
 
@@ -55,4 +49,4 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-export default app;
+module.exports = app;
