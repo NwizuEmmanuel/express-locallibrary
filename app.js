@@ -1,33 +1,43 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+import createError from 'http-errors';
+import express, { json, urlencoded, static as static_ } from 'express';
+import { join } from 'path';
+import cookieParser from 'cookie-parser';
+import logger from 'morgan';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+import indexRouter from './routes/index.js';
+import usersRouter from './routes/users.js';
+import wikiRouter from "./routes/wiki.js";
+import catalogRouter from "./routes/catalog.js"
+import sampleRouter from "./routes/sample.js"
 
-var app = express();
-const mongoose = require("mongoose");
-mongoose.set("strictQuery", false);
+let app = express();
+import { set, connect } from "mongoose";
+set("strictQuery", false);
 const mongoDB = "mongodb://localhost:27071/local_library";
 async function main(){
-  await mongoose.connect(mongoDB);
+  await connect(mongoDB);
 }
 main().catch((err) => console.log(err));
 
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
+app.set('views', join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
 app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(json());
+app.use(urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(static_(join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use("/wiki", wikiRouter);
+app.use("/catalog", catalogRouter)
+app.use("/sample", sampleRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -45,4 +55,4 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-module.exports = app;
+export default app;

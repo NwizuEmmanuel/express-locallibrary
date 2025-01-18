@@ -1,0 +1,9 @@
+doctype html
+html(lang="en")
+    head
+        title= title
+        scrip(type="text/javascript")
+    body
+        h1=title
+        p This is a line with #[em some emphasis] and #[strong strong text] markup.
+        p This line has un-escaped data: !{'<em> is emphasized</em>'} and escaped data: #{'<em> is not emphasized</em>'}
